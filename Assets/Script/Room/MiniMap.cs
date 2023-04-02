@@ -20,14 +20,15 @@ public class MiniMap : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            CreateMonster();
             miniMap.SetActive(true);
+            Debug.Log("miniMap.activeSelf" + miniMap.activeSelf);
+            CreateMonster();
             CameraController.instance.ChangeTarget(transform);
         }
     }
     public void CreateMonster()
     {
-        if (!miniMap.activeSelf)
+        if (miniMap.activeSelf)
         {
             // 创建怪物
             for (int i = 0; i < monsterNumber; i++)
@@ -35,7 +36,8 @@ public class MiniMap : MonoBehaviour
                 generatorPoint = new Vector3(Random.Range(LeftUp.transform.position.x, RightDown.transform.position.x), Random.Range(LeftUp.transform.position.y, RightDown.transform.position.y));
                 Instantiate(monster, generatorPoint, Quaternion.identity);
             }
-
+            // 创建门
+            Room.CreateDoor();
         }
     }
 }

@@ -76,6 +76,14 @@ public class RoomGenerator : MonoBehaviour
         {
             SetUpWall(room);
         }
+        foreach (Room room1 in rooms)
+        {
+            room1.roomUp = false;
+            room1.roomDown = false;
+            room1.roomLeft = false;
+            room1.roomRight = false;
+            Room.SetDoor(room1);
+        }
     }
     // 向上、下、左、右移动标记点
     public void ChangePointPos()
@@ -116,11 +124,11 @@ public class RoomGenerator : MonoBehaviour
     // 判断四个方向上是否其他房间，参数是Room类
     public static void SetupDoor(Room newRoom)
     {
-        // 通过将roomUp的参数设置为true来创建门
-        if (positionRoom.Contains(newRoom.transform.position + new Vector3(0, yOffsetRoom, 0))) { newRoom.roomUp = true; Debug.Log("Up"); }
-        if (positionRoom.Contains(newRoom.transform.position + new Vector3(0, -yOffsetRoom, 0))) { newRoom.roomDown = true; Debug.Log("Down"); }
-        if (positionRoom.Contains(newRoom.transform.position + new Vector3(xOffsetRoom, 0, 0))) { newRoom.roomRight = true; Debug.Log("Right"); }
-        if (positionRoom.Contains(newRoom.transform.position + new Vector3(-xOffsetRoom, 0, 0))) { newRoom.roomLeft = true; Debug.Log("Left"); }
+        // 通过更改roomUp的参数为true来创建门
+        if (positionRoom.Contains(newRoom.transform.position + new Vector3(0, yOffsetRoom, 0))) { newRoom.roomUp = true;         Debug.Log("roomUp" + newRoom.roomUp);}
+        if (positionRoom.Contains(newRoom.transform.position + new Vector3(0, -yOffsetRoom, 0))) { newRoom.roomDown = true;         Debug.Log("roomDown" + newRoom.roomDown);}
+        if (positionRoom.Contains(newRoom.transform.position + new Vector3(xOffsetRoom, 0, 0))) { newRoom.roomRight = true;         Debug.Log("roomRight" + newRoom.roomRight);}
+        if (positionRoom.Contains(newRoom.transform.position + new Vector3(-xOffsetRoom, 0, 0))) { newRoom.roomLeft = true;         Debug.Log("roomLeft" + newRoom.roomLeft);}
     }
     public void SetUpWall(Room newRoom)
     {

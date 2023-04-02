@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Room : MonoBehaviour
 {
-    [SerializeField] private GameObject doorLeft, doorRight, doorUp, doorDown;
+    [SerializeField] public GameObject doorLeft, doorRight, doorUp, doorDown;
 
     public bool roomLeft = false, roomRight = false, roomUp = false, roomDown = false;
 
@@ -25,27 +25,14 @@ public class Room : MonoBehaviour
 
     private void Update()
     {
-        if (done)
-        {
-            // for (int i = 0; i < 4; i++)
-            // {
-                // gameObject.transform.GetChild(i).gameObject.SetActive(false);
-            roomInstance = this;
-            roomInstance.roomUp = false;
-            roomInstance.roomDown = false;
-            roomInstance.roomLeft = false;
-            roomInstance.roomRight = false;
-            SetDoor();
-            // }
-        }
+
     }
-    private void SetDoor()
+    public static void SetDoor(Room room)
     {
-        Debug.Log("I will setdoor");
-        roomInstance.doorLeft.SetActive(roomLeft);
-        roomInstance.doorRight.SetActive(roomRight);
-        roomInstance.doorUp.SetActive(roomUp);
-        roomInstance.doorDown.SetActive(roomDown);
+        room.doorUp.SetActive(room.roomUp);
+        room.doorDown.SetActive(room.roomDown);
+        room.doorLeft.SetActive(room.roomLeft);
+        room.doorRight.SetActive(room.roomRight);
     }
 
     public void UpdateRoom()
@@ -64,19 +51,46 @@ public class Room : MonoBehaviour
             bool enemyAlive = enemy.GetComponent<Ghoul>().MA.isAlive;
             done = done && !enemyAlive;
         }
+        if (done)
+        {
+            // for (int i = 0; i < 4; i++)
+            // {
+                // gameObject.transform.GetChild(i).gameObject.SetActive(false);
+            roomInstance.roomUp = false;
+            roomInstance.roomDown = false;
+            roomInstance.roomLeft = false;
+            roomInstance.roomRight = false;
+            SetDoor(roomInstance);
+            // }
+        }
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            if (GameObject.FindGameObjectWithTag("Enemy"))
-            {
-                done = false;
-                roomInstance = this;
-                RoomGenerator.SetupDoor(roomInstance);
-                SetDoor();
-                Debug.Log(roomInstance.transform.position);
-            }
+            roomInstance = this;
+            Debug.Log(roomInstance.transform.position);
         }
+    }
+    // private void OnTriggerEnter2D(Collider2D other)
+    // {
+    //     if (other.CompareTag("Player"))
+    //     {
+    //         if (GameObject.FindGameObjectWithTag("Enemy"))
+    //         {
+    //             done = false;
+    //             roomInstance = this;
+    //             RoomGenerator.SetupDoor(roomInstance);
+    //             SetDoor();
+    //             Debug.Log(roomInstance.transform.position);
+    //         }
+    //     }
+    // }
+    public static void CreateDoor()
+    {
+        done = false;
+        Debug.Log("done" + done);
+        RoomGenerator.SetupDoor(roomInstance);
+        SetDoor(roomInstance);
     }
 }

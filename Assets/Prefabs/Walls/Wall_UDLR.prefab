@@ -119,6 +119,7 @@ MonoBehaviour:
   LeftUp: {fileID: 5201498252634748751}
   RightDown: {fileID: 4161928073850919536}
   monster: {fileID: 8750482381856319357, guid: 1b2967b2654fe0a4781af02457a0f44c, type: 3}
+  monsterNumber: 2
 --- !u!1 &4161928073850919536
 GameObject:
   m_ObjectHideFlags: 0
