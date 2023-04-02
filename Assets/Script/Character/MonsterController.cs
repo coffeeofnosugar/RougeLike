@@ -15,6 +15,7 @@ public abstract class MonsterController : MonoBehaviour
     public int health = 3;
     public float repelDistance = 8f; // 怪物击退距离
     [SerializeField] public MonsterAttribute MA;
+    private float destroyTime = 5f;
 
     // Start is called before the first frame update
     public void Start()
@@ -28,40 +29,67 @@ public abstract class MonsterController : MonoBehaviour
     // Update is called once per frame
     public void Update()
     {
-        if (MA.isHit)
+        if (MA.isAlive)
         {
-            // 获取当前动画播放进度
-            MA.info = MA.animator.GetCurrentAnimatorStateInfo(0);
-            // 转向
-            transform.localScale = new Vector3(-direction.x, 1, 1);
-            // 受击击退
-            MA.rb.MovePosition(MA.rb.position + direction * repelDistance * Time.deltaTime);
-            if (MA.info.normalizedTime >= .6f)
+            if (timer >= startWaitTime)
             {
-                MA.isHit = false;
-                if (MA.isAttack)
-                    MA.isAttack = false;    // 防止攻击被打断而无法再次攻击
+                startAI = true;
+                timer = 0;
+                startWaitTime = 0;
+            }
+            else
+                timer += Time.deltaTime;
+            
+            if (MA.isHit)
+            {
+                Debug.Log("I'm injurd");
+                // 获取当前动画播放进度
+                MA.info = MA.animator.GetCurrentAnimatorStateInfo(0);
+                // 转向
+                transform.localScale = new Vector3(-direction.x, 1, 1);
+                // 受击击退
+                MA.rb.MovePosition(MA.rb.position + direction * repelDistance * Time.deltaTime);
+                if (MA.info.normalizedTime >= .6f)
+                {
+                    MA.isHit = false;
+                    if (MA.isAttack)
+                        MA.isAttack = false;    // 防止攻击被打断而无法再次攻击
+                }
             }
         }
-        if (timer >= startWaitTime)
-            startAI = true;
-        if (timer <= startWaitTime + 1)
-            timer += Time.deltaTime;
+        else
+        {
+            if (timer >= destroyTime)
+            {
+                Destroy(gameObject);
+                timer = 0;
+                destroyTime = 0;
+            }
+            else
+                timer += Time.deltaTime;
+        }
     }
     public void TakeDamage(Vector2 direction)
     {
-        health--;
-        MA.isHit = true;
-        MA.sr.color = Color.red;
-        Invoke("ResetColor", flashTime);
-        this.direction = direction;
-        MA.animator.SetTrigger("isHit");
+        if (MA.isAlive)
+        {
+            health--;
+            MA.isHit = true;
+            MA.sr.color = Color.red;
+            Invoke("ResetColor", flashTime);
+            this.direction = direction;
+            MA.animator.SetTrigger("isHit");
+        }
     }
     private void ResetColor()
     {
         MA.sr.color = originalColor;
         if (health <= 0)
-            Destroy(gameObject);
+        {
+            startAI = false;
+            MA.animator.SetTrigger("die");
+            MA.isAlive = false;
+        }
     }
     public void AttackEnd()
     {
@@ -79,4 +107,5 @@ public class MonsterAttribute
     public SpriteRenderer sr;
     public bool isHit;
     public bool isAttack;
+    public bool isAlive = true;
 }

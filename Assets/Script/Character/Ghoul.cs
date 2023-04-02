@@ -19,13 +19,15 @@ public class Ghoul : MonsterController
     // Update is called once per frame
     new void Update()
     {
-
         base.Update();
-        if (startAI)
+        if (MA.isAlive)
         {
-            StartMove();
-            SwitchAnim();
-            Attack();
+            if (startAI)
+            {
+                StartMove();
+                SwitchAnim();
+                Attack();
+            }
         }
     }
     private void StartMove()
@@ -33,9 +35,9 @@ public class Ghoul : MonsterController
         if (GameObject.FindGameObjectWithTag("Player"))
         {
             target = GameObject.FindGameObjectWithTag("Player");
-            if (target.transform.position - transform.position != new Vector3(0, 0, 0))
-                movement_ = target.transform.position - transform.position;
-            if (!MA.isAttack && !MA.isHit)
+            // if (target.transform.position - transform.position != new Vector3(0, 0, 0))
+            movement_ = target.transform.position - transform.position;
+            if (movement_.magnitude >= .3f && !MA.isAttack && !MA.isHit)
                 transform.position = Vector2.MoveTowards(transform.position, target.transform.position, maxSpeed * Time.deltaTime);
         }
     }

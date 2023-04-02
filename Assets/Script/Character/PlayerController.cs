@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private float timer;
     [Header("角色信息")]
     public int health = 10;
     public float maxSpeed;
@@ -12,6 +13,7 @@ public class PlayerController : MonoBehaviour
     [Header("技能信息")]
     public float interval = 2f;
     [SerializeField] public PlayerAttribute PA;
+    private float destroyTime = 5f;
 
     // Start is called before the first frame update
     void Start()
@@ -25,12 +27,27 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PA.movement.x = Input.GetAxisRaw("Horizontal");
-        PA.movement.y = Input.GetAxisRaw("Vertical");
-        SwitchAnim();
-        //打开地图
-        miniMap.gameObject.SetActive(Input.GetKey(KeyCode.M));
-        Attack();
+        if (PA.isAlive)
+        {
+            PA.movement.x = Input.GetAxisRaw("Horizontal");
+            PA.movement.y = Input.GetAxisRaw("Vertical");
+            SwitchAnim();
+            //打开地图
+            miniMap.gameObject.SetActive(Input.GetKey(KeyCode.M));
+            Attack();
+        }
+        else
+        {
+            if (timer >= destroyTime)
+            {
+                Destroy(gameObject);
+                timer = 0;
+                destroyTime = 0;
+            }
+            else
+                timer += Time.deltaTime;
+        }
+
     }
 
     private void FixedUpdate()
@@ -73,16 +90,16 @@ public class PlayerController : MonoBehaviour
             PA.comboStep++;
             if (PA.comboStep > 3)
                 PA.comboStep = 1;
-            PA.timer = interval;
-            PA.animator.SetTrigger("skill_knife");
+            timer = interval;
+            PA.animator.SetTrigger("isAttack");
             PA.animator.SetInteger("ComboStep", PA.comboStep);
         }
-        if (PA.timer != 0)
+        if (timer != 0)
         {
-            PA.timer -= Time.deltaTime;
-            if (PA.timer <= 0)
+            timer -= Time.deltaTime;
+            if (timer <= 0)
             {
-                PA.timer = 0;
+                timer = 0;
                 PA.comboStep = 0;
             }
         }
@@ -93,27 +110,31 @@ public class PlayerController : MonoBehaviour
     }
     public void TakeDamage(Vector2 direction)
     {
-        health--;
-        PA.isHit = true;
-        PA.sr.color = Color.red;
-        Invoke("ResetColor", PA.flashTime);
-        PA.direction = direction;
-        PA.animator.SetTrigger("isHit");
+        if (PA.isAlive)
+        {
+            health--;
+            PA.isHit = true;
+            PA.sr.color = Color.red;
+            Invoke("ResetColor", PA.flashTime);
+            PA.direction = direction;
+            PA.animator.SetTrigger("isHit");
+        }
     }
     public void ResetColor()
     {
         PA.sr.color = PA.originalColor;
         if (health <= 0)
         {
-            Debug.Log("aaaaa");
+            PA.animator.SetTrigger("die");
+            PA.isAlive = false;
         }
-            Destroy(gameObject);
     }
 }
 
 [System.Serializable]
 public class PlayerAttribute
 {
+    public bool isAlive = true;
     // 获取当前动画播放进度
     public AnimatorStateInfo info;
     public Rigidbody2D rb;
@@ -122,7 +143,6 @@ public class PlayerAttribute
     // 控制位移
     public Vector2 movement;
     public int comboStep;
-    public float timer;
     public bool isAttack = false;
     public bool isHit;
     public Color originalColor;

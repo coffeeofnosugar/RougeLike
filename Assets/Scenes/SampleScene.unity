@@ -1005,6 +1005,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8750482381856319351, guid: 1b2967b2654fe0a4781af02457a0f44c, type: 3}
+      propertyPath: health
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8750482381856319357, guid: 1b2967b2654fe0a4781af02457a0f44c, type: 3}
       propertyPath: m_Name
       value: Ghoul
