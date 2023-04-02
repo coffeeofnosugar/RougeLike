@@ -12,6 +12,8 @@ public class Room : MonoBehaviour
     private Transform doors;
     public static bool done = false;
 
+    public static Room roomInstance;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,11 +27,25 @@ public class Room : MonoBehaviour
     {
         if (done)
         {
-            for (int i = 0; i < 4; i++)
-            {
-                gameObject.transform.GetChild(i).gameObject.SetActive(false);
-            }
+            // for (int i = 0; i < 4; i++)
+            // {
+                // gameObject.transform.GetChild(i).gameObject.SetActive(false);
+            roomInstance = this;
+            roomInstance.roomUp = false;
+            roomInstance.roomDown = false;
+            roomInstance.roomLeft = false;
+            roomInstance.roomRight = false;
+            SetDoor();
+            // }
         }
+    }
+    private void SetDoor()
+    {
+        Debug.Log("I will setdoor");
+        roomInstance.doorLeft.SetActive(roomLeft);
+        roomInstance.doorRight.SetActive(roomRight);
+        roomInstance.doorUp.SetActive(roomUp);
+        roomInstance.doorDown.SetActive(roomDown);
     }
 
     public void UpdateRoom()
@@ -47,6 +63,20 @@ public class Room : MonoBehaviour
             done = true;
             bool enemyAlive = enemy.GetComponent<Ghoul>().MA.isAlive;
             done = done && !enemyAlive;
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            if (GameObject.FindGameObjectWithTag("Enemy"))
+            {
+                done = false;
+                roomInstance = this;
+                RoomGenerator.SetupDoor(roomInstance);
+                SetDoor();
+                Debug.Log(roomInstance.transform.position);
+            }
         }
     }
 }

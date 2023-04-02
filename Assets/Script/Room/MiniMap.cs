@@ -29,11 +29,13 @@ public class MiniMap : MonoBehaviour
     {
         if (!miniMap.activeSelf)
         {
+            // 创建怪物
             for (int i = 0; i < monsterNumber; i++)
             {
                 generatorPoint = new Vector3(Random.Range(LeftUp.transform.position.x, RightDown.transform.position.x), Random.Range(LeftUp.transform.position.y, RightDown.transform.position.y));
                 Instantiate(monster, generatorPoint, Quaternion.identity);
             }
+
         }
     }
 }

@@ -17,11 +17,11 @@ public class RoomGenerator : MonoBehaviour
 
     [Header("位置控制")]
     [SerializeField] private Transform generatorPoint;
-    [SerializeField] private float xOffset;
-    [SerializeField] private float yOffset;
+    [SerializeField] private static float xOffsetRoom = 18;
+    [SerializeField] private static float yOffsetRoom = 10;
 
     private List<Room> rooms = new List<Room>();
-    private List<Vector3> positionRoom = new List<Vector3>();
+    private static List<Vector3> positionRoom = new List<Vector3>();
     
     private List<Vector3> endInterlinkageRoom = new List<Vector3>();
     private Room lastRoom;
@@ -53,10 +53,10 @@ public class RoomGenerator : MonoBehaviour
                 endRoom = room.gameObject;
             }
         }
-        endInterlinkageRoom.Add(endRoom.transform.position + new Vector3(0, yOffset, 0));
-        endInterlinkageRoom.Add(endRoom.transform.position + new Vector3(0, -yOffset, 0));
-        endInterlinkageRoom.Add(endRoom.transform.position + new Vector3(xOffset, 0, 0));
-        endInterlinkageRoom.Add(endRoom.transform.position + new Vector3(-xOffset, 0, 0));
+        endInterlinkageRoom.Add(endRoom.transform.position + new Vector3(0, yOffsetRoom, 0));
+        endInterlinkageRoom.Add(endRoom.transform.position + new Vector3(0, -yOffsetRoom, 0));
+        endInterlinkageRoom.Add(endRoom.transform.position + new Vector3(xOffsetRoom, 0, 0));
+        endInterlinkageRoom.Add(endRoom.transform.position + new Vector3(-xOffsetRoom, 0, 0));
         foreach (var roomPosition in endInterlinkageRoom)
         {
             if (!IsAroundHaveRoom(roomPosition))
@@ -87,16 +87,16 @@ public class RoomGenerator : MonoBehaviour
             switch(direction)
             {
                 case Direction.up:
-                    generatorPoint.position += new Vector3(0, yOffset, 0);
+                    generatorPoint.position += new Vector3(0, yOffsetRoom, 0);
                     break;
                 case Direction.down:
-                    generatorPoint.position += new Vector3(0, -yOffset, 0);
+                    generatorPoint.position += new Vector3(0, -yOffsetRoom, 0);
                     break;
                 case Direction.left:
-                    generatorPoint.position += new Vector3(xOffset, 0, 0);
+                    generatorPoint.position += new Vector3(xOffsetRoom, 0, 0);
                     break;
                 case Direction.right:
-                    generatorPoint.position += new Vector3(-xOffset, 0, 0);
+                    generatorPoint.position += new Vector3(-xOffsetRoom, 0, 0);
                     break;
             }
         }while(IsHaveRoom(generatorPoint));
@@ -114,14 +114,13 @@ public class RoomGenerator : MonoBehaviour
         return false;
     }
     // 判断四个方向上是否其他房间，参数是Room类
-    public void SetupDoor(Room newRoom)
+    public static void SetupDoor(Room newRoom)
     {
         // 通过将roomUp的参数设置为true来创建门
-        if (positionRoom.Contains(newRoom.transform.position + new Vector3(0, yOffset, 0))) { newRoom.roomUp = true; }
-        if (positionRoom.Contains(newRoom.transform.position + new Vector3(0, -yOffset, 0))) { newRoom.roomDown = true; }
-        if (positionRoom.Contains(newRoom.transform.position + new Vector3(xOffset, 0, 0))) { newRoom.roomRight = true; }
-        if (positionRoom.Contains(newRoom.transform.position + new Vector3(-xOffset, 0, 0))) { newRoom.roomLeft = true; }
-
+        if (positionRoom.Contains(newRoom.transform.position + new Vector3(0, yOffsetRoom, 0))) { newRoom.roomUp = true; Debug.Log("Up"); }
+        if (positionRoom.Contains(newRoom.transform.position + new Vector3(0, -yOffsetRoom, 0))) { newRoom.roomDown = true; Debug.Log("Down"); }
+        if (positionRoom.Contains(newRoom.transform.position + new Vector3(xOffsetRoom, 0, 0))) { newRoom.roomRight = true; Debug.Log("Right"); }
+        if (positionRoom.Contains(newRoom.transform.position + new Vector3(-xOffsetRoom, 0, 0))) { newRoom.roomLeft = true; Debug.Log("Left"); }
     }
     public void SetUpWall(Room newRoom)
     {
@@ -159,10 +158,10 @@ public class RoomGenerator : MonoBehaviour
     public bool IsAroundHaveRoom(Vector3 roomPosition)
     {
         positionRoom.Remove(endRoom.transform.position);
-        if (positionRoom.Contains(roomPosition + new Vector3(0, yOffset, 0))) { return true; }
-        if (positionRoom.Contains(roomPosition + new Vector3(0, -yOffset, 0))) { return true; }
-        if (positionRoom.Contains(roomPosition + new Vector3(xOffset, 0, 0))) { return true; }
-        if (positionRoom.Contains(roomPosition + new Vector3(-xOffset, 0, 0))) { return true; }
+        if (positionRoom.Contains(roomPosition + new Vector3(0, yOffsetRoom, 0))) { return true; }
+        if (positionRoom.Contains(roomPosition + new Vector3(0, -yOffsetRoom, 0))) { return true; }
+        if (positionRoom.Contains(roomPosition + new Vector3(xOffsetRoom, 0, 0))) { return true; }
+        if (positionRoom.Contains(roomPosition + new Vector3(-xOffsetRoom, 0, 0))) { return true; }
         return false;
     }
 }

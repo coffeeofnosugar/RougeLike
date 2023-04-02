@@ -799,8 +799,6 @@ MonoBehaviour:
   starColor: {r: 0.27922016, g: 0.9622642, b: 0.022694906, a: 1}
   endColor: {r: 0.9245283, g: 0.2921858, b: 0.32479447, a: 1}
   generatorPoint: {fileID: 1501783924}
-  xOffset: 18
-  yOffset: 10
   WallType:
     singleLeft: {fileID: 5118429245617674045, guid: 0406c393f553dd34c806892d0ae03e50, type: 3}
     singleRight: {fileID: 5118429245617674045, guid: a8c05aaa8382cb74c9b3150e888725f5, type: 3}
