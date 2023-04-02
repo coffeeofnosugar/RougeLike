@@ -42,7 +42,6 @@ public abstract class MonsterController : MonoBehaviour
             
             if (MA.isHit)
             {
-                Debug.Log("I'm injurd");
                 // 获取当前动画播放进度
                 MA.info = MA.animator.GetCurrentAnimatorStateInfo(0);
                 // 转向
@@ -89,6 +88,7 @@ public abstract class MonsterController : MonoBehaviour
             startAI = false;
             MA.animator.SetTrigger("die");
             MA.isAlive = false;
+            Room.JudgmenDone();
         }
     }
     public void AttackEnd()

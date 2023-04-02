@@ -170,7 +170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startAI: 0
-  health: 10
+  health: 1
   repelDistance: 8
   MA:
     animator: {fileID: 0}
@@ -178,6 +178,7 @@ MonoBehaviour:
     sr: {fileID: 0}
     isHit: 0
     isAttack: 0
+    isAlive: 1
   maxSpeed: 1
   attackRange: 1.35
 --- !u!1 &8750482382509646239

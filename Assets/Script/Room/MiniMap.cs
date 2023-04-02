@@ -5,6 +5,11 @@ using UnityEngine;
 public class MiniMap : MonoBehaviour
 {
     private GameObject miniMap;
+    public GameObject LeftUp;
+    public GameObject RightDown;
+    public GameObject monster;
+    private Vector3 generatorPoint;
+    public int monsterNumber = 2;
     private void OnEnable()
     {
         miniMap = transform.parent.GetChild(0).gameObject;
@@ -15,8 +20,20 @@ public class MiniMap : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            CreateMonster();
             miniMap.SetActive(true);
             CameraController.instance.ChangeTarget(transform);
+        }
+    }
+    public void CreateMonster()
+    {
+        if (!miniMap.activeSelf)
+        {
+            for (int i = 0; i < monsterNumber; i++)
+            {
+                generatorPoint = new Vector3(Random.Range(LeftUp.transform.position.x, RightDown.transform.position.x), Random.Range(LeftUp.transform.position.y, RightDown.transform.position.y));
+                Instantiate(monster, generatorPoint, Quaternion.identity);
+            }
         }
     }
 }
