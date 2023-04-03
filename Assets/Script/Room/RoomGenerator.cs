@@ -22,7 +22,6 @@ public class RoomGenerator : MonoBehaviour
 
     private List<Room> rooms = new List<Room>();
     private static List<Vector3> positionRoom = new List<Vector3>();
-    
     private List<Vector3> endInterlinkageRoom = new List<Vector3>();
     private Room lastRoom;
     [Header("墙壁")]
@@ -125,10 +124,10 @@ public class RoomGenerator : MonoBehaviour
     public static void SetupDoor(Room newRoom)
     {
         // 通过更改roomUp的参数为true来创建门
-        if (positionRoom.Contains(newRoom.transform.position + new Vector3(0, yOffsetRoom, 0))) { newRoom.roomUp = true;         Debug.Log("roomUp" + newRoom.roomUp);}
-        if (positionRoom.Contains(newRoom.transform.position + new Vector3(0, -yOffsetRoom, 0))) { newRoom.roomDown = true;         Debug.Log("roomDown" + newRoom.roomDown);}
-        if (positionRoom.Contains(newRoom.transform.position + new Vector3(xOffsetRoom, 0, 0))) { newRoom.roomRight = true;         Debug.Log("roomRight" + newRoom.roomRight);}
-        if (positionRoom.Contains(newRoom.transform.position + new Vector3(-xOffsetRoom, 0, 0))) { newRoom.roomLeft = true;         Debug.Log("roomLeft" + newRoom.roomLeft);}
+        if (positionRoom.Contains(newRoom.transform.position + new Vector3(0, yOffsetRoom, 0))) { newRoom.roomUp = true; }
+        if (positionRoom.Contains(newRoom.transform.position + new Vector3(0, -yOffsetRoom, 0))) { newRoom.roomDown = true; }
+        if (positionRoom.Contains(newRoom.transform.position + new Vector3(xOffsetRoom, 0, 0))) { newRoom.roomRight = true;   }
+        if (positionRoom.Contains(newRoom.transform.position + new Vector3(-xOffsetRoom, 0, 0))) { newRoom.roomLeft = true; }
     }
     public void SetUpWall(Room newRoom)
     {

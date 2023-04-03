@@ -44,6 +44,7 @@ public class Room : MonoBehaviour
     }
     public static void JudgmenDone()
     {
+        // 获取
         GameObject[] enemys = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject enemy in enemys)
         {
@@ -53,15 +54,11 @@ public class Room : MonoBehaviour
         }
         if (done)
         {
-            // for (int i = 0; i < 4; i++)
-            // {
-                // gameObject.transform.GetChild(i).gameObject.SetActive(false);
             roomInstance.roomUp = false;
             roomInstance.roomDown = false;
             roomInstance.roomLeft = false;
             roomInstance.roomRight = false;
             SetDoor(roomInstance);
-            // }
         }
     }
     private void OnTriggerEnter2D(Collider2D other)
@@ -69,27 +66,11 @@ public class Room : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             roomInstance = this;
-            Debug.Log(roomInstance.transform.position);
         }
     }
-    // private void OnTriggerEnter2D(Collider2D other)
-    // {
-    //     if (other.CompareTag("Player"))
-    //     {
-    //         if (GameObject.FindGameObjectWithTag("Enemy"))
-    //         {
-    //             done = false;
-    //             roomInstance = this;
-    //             RoomGenerator.SetupDoor(roomInstance);
-    //             SetDoor();
-    //             Debug.Log(roomInstance.transform.position);
-    //         }
-    //     }
-    // }
     public static void CreateDoor()
     {
         done = false;
-        Debug.Log("done" + done);
         RoomGenerator.SetupDoor(roomInstance);
         SetDoor(roomInstance);
     }

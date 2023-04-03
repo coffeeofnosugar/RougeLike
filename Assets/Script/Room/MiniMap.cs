@@ -21,7 +21,6 @@ public class MiniMap : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             miniMap.SetActive(true);
-            Debug.Log("miniMap.activeSelf" + miniMap.activeSelf);
             CreateMonster();
             CameraController.instance.ChangeTarget(transform);
         }

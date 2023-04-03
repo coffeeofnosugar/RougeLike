@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     private float timer;
     [Header("角色信息")]
-    public int health = 10;
+    public int health = 5;
     public float maxSpeed;
     [Header("小地图")]
     public GameObject miniMap;
@@ -113,6 +113,7 @@ public class PlayerController : MonoBehaviour
         if (PA.isAlive)
         {
             health--;
+            HealthController.GetHit();
             PA.isHit = true;
             PA.sr.color = Color.red;
             Invoke("ResetColor", PA.flashTime);
