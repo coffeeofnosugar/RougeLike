@@ -11,15 +11,15 @@ public class RoomGenerator : MonoBehaviour
     private GameObject endRoom;
 
     [Header("房间信息")]
-    [SerializeField] private GameObject roomPrefab;
-    [SerializeField] int rommNumber;
-    [SerializeField] Color starColor,endColor;
+    public GameObject roomPrefab;
+    public int rommNumber;
+    public Color starColor,endColor;
 
     [Header("位置控制")]
-    [SerializeField] private Transform generatorPoint;
-    [SerializeField] private static float xOffsetRoom = 18;
-    [SerializeField] private static float yOffsetRoom = 10;
+    public Transform generatorPoint;
 
+    private static float xOffsetRoom = 18;
+    private static float yOffsetRoom = 10;
     private List<Room> rooms = new List<Room>();
     private static List<Vector3> positionRoom = new List<Vector3>();
     private List<Vector3> endInterlinkageRoom = new List<Vector3>();

@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Ghoul : MonsterController
 {
-    private GameObject target;
     public float maxSpeed = 5;
-    private Vector2 movement_;
     public float attackRange = 1f;
+    private GameObject target;
+    private Vector2 movement_;
     private float interval = 2f;
-    private float timerSon;
+    private float comboTimer;
     // Start is called before the first frame update
     new void Start()
     {
@@ -53,17 +53,17 @@ public class Ghoul : MonsterController
     }
     public void Attack()
     {
-        if (movement_.magnitude <= attackRange && !isAttack && !isHit && timerSon <= 0)
+        if (movement_.magnitude <= attackRange && !isAttack && !isHit && comboTimer <= 0)
         {
             isAttack = true;
-            timerSon = interval;
+            comboTimer = interval;
             animator.SetTrigger("isAttack");
         }
-        if (timerSon != 0)
+        if (comboTimer != 0)
         {
-            timerSon -= Time.deltaTime;
-            if (timerSon <= 0)
-                timerSon = 0;
+            comboTimer -= Time.deltaTime;
+            if (comboTimer <= 0)
+                comboTimer = 0;
         }
     }
 }

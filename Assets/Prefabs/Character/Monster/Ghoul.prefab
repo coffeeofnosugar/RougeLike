@@ -169,16 +169,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82a965258fb4d4c4a8ecf7448d58bdea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startAI: 0
   health: 1
   repelDistance: 8
-  MA:
-    animator: {fileID: 0}
-    rb: {fileID: 0}
-    sr: {fileID: 0}
-    isHit: 0
-    isAttack: 0
-    isAlive: 1
+  bloodEffect: {fileID: 5527082268397097237, guid: 58878b3b392b00842afe5e7f3b5912b2, type: 3}
+  animator: {fileID: 0}
+  rb: {fileID: 0}
+  sr: {fileID: 0}
+  isHit: 0
+  isAttack: 0
+  isAlive: 1
+  startAI: 0
   maxSpeed: 1
   attackRange: 1.35
 --- !u!1 &8750482382509646239
@@ -310,3 +310,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 897c489e35d21564ba89dab7cc24f7bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isFriendHit: 0

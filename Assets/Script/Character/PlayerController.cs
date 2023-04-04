@@ -9,8 +9,6 @@ public class PlayerController : MonoBehaviour
     [Header("技能信息")]
     public float interval = 2f;
     public float maxSpeed;
-    [Header("小地图")]
-    public GameObject miniMap;
     private float destroyTime = 5f;
     private float timer;
     [HideInInspector] public bool isAlive = true;
@@ -47,8 +45,6 @@ public class PlayerController : MonoBehaviour
             movement.x = Input.GetAxisRaw("Horizontal");
             movement.y = Input.GetAxisRaw("Vertical");
             SwitchAnim();
-            //打开地图
-            miniMap.gameObject.SetActive(Input.GetKey(KeyCode.M));
             Attack();
         }
         else

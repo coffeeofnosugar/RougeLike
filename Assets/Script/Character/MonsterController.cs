@@ -7,6 +7,8 @@ public abstract class MonsterController : MonoBehaviour
     [Header("怪物基本信息")]
     public int health = 3;
     public float repelDistance = 8f; // 怪物击退距离
+    [Header("特效")]
+    public GameObject bloodEffect;
     // 初始化击退方向
     private Vector2 direction;
     private Color originalColor;
@@ -82,6 +84,7 @@ public abstract class MonsterController : MonoBehaviour
             health--;
             isHit = true;
             sr.color = Color.red;
+            Instantiate(bloodEffect, transform.position, Quaternion.identity);
             Invoke("ResetColor", flashTime);
             this.direction = direction;
             animator.SetTrigger("isHit");
