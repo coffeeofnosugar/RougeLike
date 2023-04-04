@@ -6,9 +6,8 @@ public class Room : MonoBehaviour
 {
     [SerializeField] public GameObject doorLeft, doorRight, doorUp, doorDown;
 
-    public bool roomLeft = false, roomRight = false, roomUp = false, roomDown = false;
-
-    public int doorNumber;
+    [HideInInspector] public bool roomLeft = false, roomRight = false, roomUp = false, roomDown = false;
+    [HideInInspector] public int doorNumber;
     private Transform doors;
     public static bool done = false;
 

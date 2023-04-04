@@ -10,11 +10,11 @@ public abstract class MonsterController : MonoBehaviour
     private float flashTime = .2f;
     private float startWaitTime = .5f;
     private float timer;
-    public bool startAI = false;
+    [HideInInspector] public bool startAI = false;
     [Header("怪物基本信息")]
     public int health = 3;
     public float repelDistance = 8f; // 怪物击退距离
-    [SerializeField] public MonsterAttribute MA;
+    [HideInInspector] public MonsterAttribute MA;
     private float destroyTime = 5f;
 
     // Start is called before the first frame update
