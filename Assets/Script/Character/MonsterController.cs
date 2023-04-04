@@ -7,13 +7,13 @@ public abstract class MonsterController : MonoBehaviour
     [Header("怪物基本信息")]
     public int health = 3;
     public float repelDistance = 8f; // 怪物击退距离
+    public float startWaitTime = .5f;
     [Header("特效")]
     public GameObject bloodEffect;
     // 初始化击退方向
     private Vector2 direction;
     private Color originalColor;
     private float flashTime = .2f;
-    private float startWaitTime = .5f;
     private float timer;
     private float destroyTime = 5f;
     // 获取当前动画播放进度
@@ -84,7 +84,7 @@ public abstract class MonsterController : MonoBehaviour
             health--;
             isHit = true;
             sr.color = Color.red;
-            Instantiate(bloodEffect, transform.position, Quaternion.identity);
+            Instantiate(bloodEffect, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
             Invoke("ResetColor", flashTime);
             this.direction = direction;
             animator.SetTrigger("isHit");
@@ -95,10 +95,11 @@ public abstract class MonsterController : MonoBehaviour
         sr.color = originalColor;
         if (health <= 0)
         {
+            if (startAI)
+                Room.JudgmenDone();
             startAI = false;
             animator.SetTrigger("die");
             isAlive = false;
-            Room.JudgmenDone();
         }
     }
     public void AttackEnd()

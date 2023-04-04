@@ -17,7 +17,7 @@ TagManager:
   - Room
   - Player
   - Enemy
-  - 
+  - Effect
   - 
   - 
   - 
@@ -55,4 +55,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 1144939291
+    locked: 0
+  - name: Effect
+    uniqueID: 2379124837
     locked: 0

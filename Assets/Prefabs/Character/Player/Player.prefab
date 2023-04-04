@@ -71,6 +71,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 897c489e35d21564ba89dab7cc24f7bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isFriendHit: 0
 --- !u!1 &1691573640659067160
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,9 +385,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 5
-  maxSpeed: 5
-  miniMap: {fileID: 0}
   interval: 1
+  maxSpeed: 5
+  bloodEffect: {fileID: 5527082268397097237, guid: 58878b3b392b00842afe5e7f3b5912b2, type: 3}
   isAlive: 1
   rb: {fileID: 0}
   animator: {fileID: 0}

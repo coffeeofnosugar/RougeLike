@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     [Header("技能信息")]
     public float interval = 2f;
     public float maxSpeed;
+    [Header("特效")]
+    public GameObject bloodEffect;
     private float destroyTime = 5f;
     private float timer;
     [HideInInspector] public bool isAlive = true;
@@ -127,6 +129,7 @@ public class PlayerController : MonoBehaviour
             HealthController.GetHit();
             isHit = true;
             sr.color = Color.red;
+            Instantiate(bloodEffect, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
             Invoke("ResetColor", flashTime);
             direction = directionGet;
             animator.SetTrigger("isHit");

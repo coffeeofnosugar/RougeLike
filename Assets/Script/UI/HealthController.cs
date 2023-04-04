@@ -10,6 +10,7 @@ public class HealthController : MonoBehaviour
     void Start()
     {
         health = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().health;
+        // health = PlayerController.playerHealth;
         for (int i = 0; i < health; i++)
         {
             healthIcon.Add(transform.GetChild(i).gameObject);
@@ -18,6 +19,7 @@ public class HealthController : MonoBehaviour
     public static void GetHit()
     {
         health--;
-        healthIcon[health].SetActive(false);
+        if (health >= 0)
+            healthIcon[health].SetActive(false);
     }
 }
