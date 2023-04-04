@@ -20,7 +20,7 @@ public class Ghoul : MonsterController
     new void Update()
     {
         base.Update();
-        if (MA.isAlive)
+        if (isAlive)
         {
             if (startAI)
             {
@@ -37,14 +37,14 @@ public class Ghoul : MonsterController
             target = GameObject.FindGameObjectWithTag("Player");
             // if (target.transform.position - transform.position != new Vector3(0, 0, 0))
             movement_ = target.transform.position - transform.position;
-            if (movement_.magnitude >= .3f && !MA.isAttack && !MA.isHit)
+            if (movement_.magnitude >= .3f && !isAttack && !isHit)
                 transform.position = Vector2.MoveTowards(transform.position, target.transform.position, maxSpeed * Time.deltaTime);
         }
     }
     public void SwitchAnim()
     {
         // 将角色当前速度的值赋值给动画的speed，来控制角色idle与run之间的转换
-        MA.animator.SetFloat("speed", movement_.magnitude);
+        animator.SetFloat("speed", movement_.magnitude);
         // 通过控制缩放的x来控制角色的转向
         if (movement_.x >= 0)
             transform.localScale = new Vector3(1, 1, 1);
@@ -53,11 +53,11 @@ public class Ghoul : MonsterController
     }
     public void Attack()
     {
-        if (movement_.magnitude <= attackRange && !MA.isAttack && !MA.isHit && timerSon <= 0)
+        if (movement_.magnitude <= attackRange && !isAttack && !isHit && timerSon <= 0)
         {
-            MA.isAttack = true;
+            isAttack = true;
             timerSon = interval;
-            MA.animator.SetTrigger("isAttack");
+            animator.SetTrigger("isAttack");
         }
         if (timerSon != 0)
         {

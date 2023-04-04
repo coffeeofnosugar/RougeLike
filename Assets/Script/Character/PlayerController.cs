@@ -4,33 +4,48 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private float timer;
     [Header("角色信息")]
     public int health = 5;
+    [Header("技能信息")]
+    public float interval = 2f;
     public float maxSpeed;
     [Header("小地图")]
     public GameObject miniMap;
-    [Header("技能信息")]
-    public float interval = 2f;
-    [SerializeField] public PlayerAttribute PA;
     private float destroyTime = 5f;
+    private float timer;
+    [HideInInspector] public bool isAlive = true;
+    // 获取当前动画播放进度
+    [HideInInspector] public AnimatorStateInfo info;
+    [HideInInspector] public Rigidbody2D rb;
+    [HideInInspector] public Animator animator;
+    [HideInInspector] public SpriteRenderer sr;
+    // 控制位移
+    [HideInInspector] public Vector2 movement;
+    [HideInInspector] public int comboStep;
+    [HideInInspector] public bool isAttack = false;
+    [HideInInspector] public bool isHit;
+    [HideInInspector] public Color originalColor;
+    [HideInInspector] public float flashTime = .2f;
+    // 击退方向
+    [HideInInspector] public Vector2 direction;
+    [HideInInspector] public float repelDistance = 8f; // 玩家击退距离
 
     // Start is called before the first frame update
     void Start()
     {
-        PA.rb = GetComponent<Rigidbody2D>();
-        PA.animator = GetComponent<Animator>();
-        PA.sr = GetComponent<SpriteRenderer>();
-        PA.originalColor = PA.sr.color;
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        sr = GetComponent<SpriteRenderer>();
+        originalColor = sr.color;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (PA.isAlive)
+        if (isAlive)
         {
-            PA.movement.x = Input.GetAxisRaw("Horizontal");
-            PA.movement.y = Input.GetAxisRaw("Vertical");
+            movement.x = Input.GetAxisRaw("Horizontal");
+            movement.y = Input.GetAxisRaw("Vertical");
             SwitchAnim();
             //打开地图
             miniMap.gameObject.SetActive(Input.GetKey(KeyCode.M));
@@ -52,47 +67,47 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        PA.rb.MovePosition(PA.rb.position + PA.movement * maxSpeed * Time.fixedDeltaTime);    
+        rb.MovePosition(rb.position + movement * maxSpeed * Time.fixedDeltaTime);    
     }
 
     void SwitchAnim()
     {
         // 将角色当前速度的值赋值给动画的speed，来控制角色idle与run之间的转换
-        PA.animator.SetFloat("speed", PA.movement.magnitude);
-        if (PA.isHit)
+        animator.SetFloat("speed", movement.magnitude);
+        if (isHit)
         {
             
             // 获取当前动画播放进度
-            PA.info = PA.animator.GetCurrentAnimatorStateInfo(0);
+            info = animator.GetCurrentAnimatorStateInfo(0);
             // 转向
-            transform.localScale = new Vector3(-PA.direction.x, 1, 1);
+            transform.localScale = new Vector3(-direction.x, 1, 1);
             // 受击击退
-            PA.rb.MovePosition(PA.rb.position + PA.direction * PA.repelDistance * Time.deltaTime);
-            if (PA.info.normalizedTime >= .6f)
+            rb.MovePosition(rb.position + direction * repelDistance * Time.deltaTime);
+            if (info.normalizedTime >= .6f)
             {
-                PA.isHit = false;
-                if (PA.isAttack)
-                    PA.isAttack = false;    // 防止攻击被打断而无法再次攻击
+                isHit = false;
+                if (isAttack)
+                    isAttack = false;    // 防止攻击被打断而无法再次攻击
             }
         }
         // 通过控制缩放的x来控制角色的转向
-        else if (PA.movement.x != 0 && !PA.isAttack)
+        else if (movement.x != 0 && !isAttack)
         {
-            transform.localScale = new Vector3(PA.movement.x, 1, 1);
+            transform.localScale = new Vector3(movement.x, 1, 1);
         }
     }
     // 使用小刀技能
     private void Attack()
     {
-        if (Input.GetKeyDown(KeyCode.J) && !PA.isAttack && !PA.isHit)
+        if (Input.GetKeyDown(KeyCode.J) && !isAttack && !isHit)
         {
-            PA.isAttack = true;
-            PA.comboStep++;
-            if (PA.comboStep > 3)
-                PA.comboStep = 1;
+            isAttack = true;
+            comboStep++;
+            if (comboStep > 3)
+                comboStep = 1;
             timer = interval;
-            PA.animator.SetTrigger("isAttack");
-            PA.animator.SetInteger("ComboStep", PA.comboStep);
+            animator.SetTrigger("isAttack");
+            animator.SetInteger("ComboStep", comboStep);
         }
         if (timer != 0)
         {
@@ -100,55 +115,34 @@ public class PlayerController : MonoBehaviour
             if (timer <= 0)
             {
                 timer = 0;
-                PA.comboStep = 0;
+                comboStep = 0;
             }
         }
     }
     private void SkillEnd()
     {
-        PA.isAttack = false;
+        isAttack = false;
     }
-    public void TakeDamage(Vector2 direction)
+    public void TakeDamage(Vector2 directionGet)
     {
-        if (PA.isAlive)
+        if (isAlive)
         {
             health--;
             HealthController.GetHit();
-            PA.isHit = true;
-            PA.sr.color = Color.red;
-            Invoke("ResetColor", PA.flashTime);
-            PA.direction = direction;
-            PA.animator.SetTrigger("isHit");
+            isHit = true;
+            sr.color = Color.red;
+            Invoke("ResetColor", flashTime);
+            direction = directionGet;
+            animator.SetTrigger("isHit");
         }
     }
     public void ResetColor()
     {
-        PA.sr.color = PA.originalColor;
+        sr.color = originalColor;
         if (health <= 0)
         {
-            PA.animator.SetTrigger("die");
-            PA.isAlive = false;
+            animator.SetTrigger("die");
+            isAlive = false;
         }
     }
-}
-
-[System.Serializable]
-public class PlayerAttribute
-{
-    public bool isAlive = true;
-    // 获取当前动画播放进度
-    public AnimatorStateInfo info;
-    public Rigidbody2D rb;
-    public Animator animator;
-    public SpriteRenderer sr;
-    // 控制位移
-    public Vector2 movement;
-    public int comboStep;
-    public bool isAttack = false;
-    public bool isHit;
-    public Color originalColor;
-    public float flashTime = .2f;
-    // 击退方向
-    public Vector2 direction;
-    public float repelDistance = 8f; // 玩家击退距离
 }

@@ -1482,10 +1482,6 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 1691573641731578007, guid: 7c8318bcce8193645b6c8b5e5ba45216, type: 3}
-      propertyPath: health
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1691573641731578007, guid: 7c8318bcce8193645b6c8b5e5ba45216, type: 3}
       propertyPath: miniMap
       value: 
       objectReference: {fileID: 602853192}

@@ -48,7 +48,7 @@ public class Room : MonoBehaviour
         foreach (GameObject enemy in enemys)
         {
             done = true;
-            bool enemyAlive = enemy.GetComponent<Ghoul>().MA.isAlive;
+            bool enemyAlive = enemy.GetComponent<Ghoul>().isAlive;
             done = done && !enemyAlive;
         }
         if (done)
