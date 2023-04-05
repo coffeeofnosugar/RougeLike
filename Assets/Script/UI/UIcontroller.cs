@@ -5,18 +5,30 @@ using UnityEngine;
 public class UIcontroller : MonoBehaviour
 {
     public GameObject miniMap;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private bool isOpenMiniMap = false;
 
     // Update is called once per frame
     void Update()
     {
-        //打开地图
-        miniMap.gameObject.SetActive(Input.GetKey(KeyCode.M));
+        if (!isOpenMiniMap)
+            //打开地图
+            miniMap.gameObject.SetActive(Input.GetKey(KeyCode.M));
         
+    }
+
+    public void OpenMiniMap()
+    {
+        if (!isOpenMiniMap)
+        {
+            miniMap.gameObject.SetActive(true);
+            Debug.Log(isOpenMiniMap);
+            isOpenMiniMap = true;
+        }
+        else
+        {
+            miniMap.gameObject.SetActive(false);
+            Debug.Log(isOpenMiniMap);
+            isOpenMiniMap = false;
+        }
     }
 }

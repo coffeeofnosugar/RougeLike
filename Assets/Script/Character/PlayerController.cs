@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,24 +12,26 @@ public class PlayerController : MonoBehaviour
     public float maxSpeed;
     [Header("特效")]
     public GameObject bloodEffect;
-    private float destroyTime = 5f;
+    [Header("按键")]
+    public Joystick moveStick; // 遥感
     private float timer;
-    [HideInInspector] public bool isAlive = true;
+    private bool isAlive = true;
     // 获取当前动画播放进度
-    [HideInInspector] public AnimatorStateInfo info;
-    [HideInInspector] public Rigidbody2D rb;
-    [HideInInspector] public Animator animator;
-    [HideInInspector] public SpriteRenderer sr;
+    private AnimatorStateInfo info;
+    private Rigidbody2D rb;
+    private Animator animator;
+    private SpriteRenderer sr;
     // 控制位移
-    [HideInInspector] public Vector2 movement;
-    [HideInInspector] public int comboStep;
-    [HideInInspector] public bool isAttack = false;
-    [HideInInspector] public bool isHit;
-    [HideInInspector] public Color originalColor;
-    [HideInInspector] public float flashTime = .2f;
+    private Vector2 movement;
+    private int comboStep;
+    private bool isAttack = false;
+    private bool isAttackButton = false;
+    private bool isHit;
+    private Color originalColor;
+    private float flashTime = .2f;
     // 击退方向
-    [HideInInspector] public Vector2 direction;
-    [HideInInspector] public float repelDistance = 8f; // 玩家击退距离
+    private Vector2 direction;
+    private float repelDistance = 8f; // 玩家击退距离
 
     // Start is called before the first frame update
     void Start()
@@ -46,21 +49,17 @@ public class PlayerController : MonoBehaviour
         {
             movement.x = Input.GetAxisRaw("Horizontal");
             movement.y = Input.GetAxisRaw("Vertical");
+            // movement.x = moveStick.Horizontal;
+            // movement.y = moveStick.Vertical;
+            movement.x = movement.x == 0 ? moveStick.Horizontal : movement.x;
+            movement.y = movement.y == 0 ? moveStick.Vertical : movement.y;
             SwitchAnim();
             Attack();
         }
         else
         {
-            if (timer >= destroyTime)
-            {
-                Destroy(gameObject);
-                timer = 0;
-                destroyTime = 0;
-            }
-            else
-                timer += Time.deltaTime;
+            Destroy(gameObject, 5f);
         }
-
     }
 
     private void FixedUpdate()
@@ -91,13 +90,29 @@ public class PlayerController : MonoBehaviour
         // 通过控制缩放的x来控制角色的转向
         else if (movement.x != 0 && !isAttack)
         {
-            transform.localScale = new Vector3(movement.x, 1, 1);
+            if (movement.x > 0)
+                transform.localScale = new Vector3(1, 1, 1);
+            else if (movement.x < 0)
+            {
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
+
         }
+    }
+    public void GetAttackButtonDown()
+    {
+        isAttackButton = true;
+        StartCoroutine("GetAttackButtonUp");
+    }
+    IEnumerator GetAttackButtonUp()
+    {
+        yield return new WaitForSeconds(.001f);
+        isAttackButton = false;
     }
     // 使用小刀技能
     private void Attack()
     {
-        if (Input.GetKeyDown(KeyCode.J) && !isAttack && !isHit)
+        if ((Input.GetButtonDown("Attack") || isAttackButton) && !isAttack && !isHit)
         {
             isAttack = true;
             comboStep++;
@@ -117,6 +132,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
     private void SkillEnd()
     {
         isAttack = false;

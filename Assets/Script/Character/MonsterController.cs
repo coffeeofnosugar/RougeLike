@@ -14,8 +14,6 @@ public abstract class MonsterController : MonoBehaviour
     private Vector2 direction;
     private Color originalColor;
     private float flashTime = .2f;
-    private float timer;
-    private float destroyTime = 5f;
     // 获取当前动画播放进度
     [HideInInspector] public AnimatorStateInfo info;
     [HideInInspector] public Animator animator;
@@ -40,15 +38,7 @@ public abstract class MonsterController : MonoBehaviour
     {
         if (isAlive)
         {
-            if (timer >= startWaitTime)
-            {
-                startAI = true;
-                timer = 0;
-                startWaitTime = 0;
-            }
-            else
-                timer += Time.deltaTime;
-            
+            Invoke("StartAI", startWaitTime);
             if (isHit)
             {
                 // 获取当前动画播放进度
@@ -67,15 +57,12 @@ public abstract class MonsterController : MonoBehaviour
         }
         else
         {
-            if (timer >= destroyTime)
-            {
-                Destroy(gameObject);
-                timer = 0;
-                destroyTime = 0;
-            }
-            else
-                timer += Time.deltaTime;
+            Destroy(gameObject, 5f);
         }
+    }
+    private void StartAI()
+    {
+        startAI = true;
     }
     public void TakeDamage(Vector2 direction)
     {
@@ -84,6 +71,7 @@ public abstract class MonsterController : MonoBehaviour
             health--;
             isHit = true;
             sr.color = Color.red;
+            // 流血特效
             Instantiate(bloodEffect, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
             Invoke("ResetColor", flashTime);
             this.direction = direction;

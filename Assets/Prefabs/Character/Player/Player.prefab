@@ -388,15 +388,4 @@ MonoBehaviour:
   interval: 1
   maxSpeed: 5
   bloodEffect: {fileID: 5527082268397097237, guid: 58878b3b392b00842afe5e7f3b5912b2, type: 3}
-  isAlive: 1
-  rb: {fileID: 0}
-  animator: {fileID: 0}
-  sr: {fileID: 0}
-  movement: {x: 0, y: 0}
-  comboStep: 0
-  isAttack: 0
-  isHit: 0
-  originalColor: {r: 0, g: 0, b: 0, a: 0}
-  flashTime: 0.2
-  direction: {x: 0, y: 0}
-  repelDistance: 8
+  moveStick: {fileID: 0}
